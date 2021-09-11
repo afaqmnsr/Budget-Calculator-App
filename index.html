@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,600" rel="stylesheet" type="text/css">
+        <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="style.css">
+        <title>Budgety</title>
+    </head>
+    <body>
+        
+        <div class="top">
+            <div class="budget">
+                <div class="budget__title">
+                    Available Budget in <span class="budget__title--month">%Month%</span>:
+
+                </div>
+                
+                <div class="budget__value">+ 2,345.64</div>
+                
+                <div class="budget__income clearfix">
+                    <div class="budget__income--text">Income</div>
+                    <div class="right">
+                        <div class="budget__income--value">+ 4,300.00</div>
+                        <div class="budget__income--percentage">&nbsp;</div>
+                    </div>
+                </div>
+                
+                <div class="budget__expenses clearfix">
+                    <div class="budget__expenses--text">Expenses</div>
+                    <div class="right clearfix">
+                        <div class="budget__expenses--value">- 1,954.36</div>
+                        <div class="budget__expenses--percentage">45%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="bottom">
+            <div class="add">
+                <div class="add__container">
+                    <select class="add__type">
+                        <option value="inc" selected>+</option>
+                        <option value="exp">-</option>
+                    </select>
+                    <input type="text" class="add__description" placeholder="Add description">
+                    <input type="number" class="add__value" placeholder="Value">
+                    <button class="add__btn"><i class="ion-ios-checkmark-outline"></i></button>
+                </div>
+            </div>
+            
+            <div class="container clearfix">
+                <div class="income">
+                    <h2 class="icome__title">Income</h2>
+                    
+                    <div class="income__list">
+                        
+                        <div class="item clearfix inc" id="income-0" style="display: none;">
+                            <div class="item__description">Salary</div>
+                            <div class="right clearfix">
+                                <div class="item__value" >+ 2,100.00</div>
+                                <div class="item__delete">
+                                    <button class="item__delete--btn">
+                                        <i class="ion-ios-close-outline"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+                <div class="expenses">
+                    <h2 class="expenses__title">Expenses</h2>
+                    
+                    <div class="expenses__list">
+                       
+                        
+                        <div class="item clearfix" id="expense-0" style="display: none;">
+                            <div class="item__description">Apartment rent</div>
+                            <div class="right clearfix">
+                                <div class="item__value">- 900.00</div>
+                                <div class="item__percentage">21%</div>
+                                <div class="item__delete">
+                                    <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+                                </div>
+                            </div>
+                        </div>
+            
+                    </div>
+                </div>
+            </div>
+                
+        </div>
+        
+
+        <script type="text/javascript">
+            
+            $(document).ready(function(){
+
+                var date = new Date();
+                mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+                var i = mlist[date.getMonth()];
+                var year = date.getFullYear()
+                $(".budget__title--month").html(i+" "+year);
+
+                document.getElementsByClassName("budget__value").innerHTML = "0";
+                document.getElementsByClassName(" budget__income--value").innerHTML = 0;
+                document.getElementsByClassName("budget__expenses--value").innerHTML = 0;
+                document.getElementsByClassName("item__value").innerHTML = 0;
+
+
+                let addbtn =document.getElementsByClassName("add__btn")[0];
+                addbtn.addEventListener("click",addData,false);
+                var i=0;
+                var j=0;
+
+                var totalIncome=0;
+                var totalExpenses=0;
+
+                var budgetAvaible=0;
+
+
+                function addData(){
+
+                    var checkSelect =document.getElementsByClassName('add__type')[0];
+                    
+                    
+                    if(checkSelect.options[0].selected===true){
+
+                        console.log("inside INCome");
+
+                        var desc=document.getElementsByClassName("add__description")[0].value; //description field value.
+                    
+                        var val=document.getElementsByClassName('add__value')[0].value; //value field value.
+                        let inc=parseFloat(val);
+
+                        totalIncome=totalIncome+inc;
+
+                        document.getElementsByClassName("budget__income--value")[0].innerHTML="+ "+totalIncome;
+
+                        budgetAvaible=totalIncome-totalExpenses;
+                        document.getElementsByClassName("budget__value")[0].innerHTML=budgetAvaible;
+                    
+                            
+                            let div0=document.createElement("div");
+                            div0.className="item clearfix"
+                            div0.setAttribute("id","income-"+i);
+                            document.getElementsByClassName("income__list")[0].appendChild(div0); //adding div0 inside income__list div/
+                    
+                            let div1=document.createElement("div");
+                            div1.setAttribute("class","item__description");
+                           
+                            div1.innerHTML=desc;
+                                    
+                            document.getElementById("income-"+i).appendChild(div1);  //adding div1 inside div0
+                    
+                    
+                            let div2=document.createElement("div");
+                            div2.className="right clearfix"
+                    
+                            document.getElementById("income-"+i).appendChild(div2); 
+                    
+                            let div3=document.createElement("div");
+                            div3.setAttribute("class","item__value");
+                            console.log(val);
+                            div3.innerHTML="+ "+val;
+                            console.log(val);
+                    
+                    
+                    
+                            document.querySelectorAll(".income__list .right")[i].appendChild(div3); 
+                            console.log(val);
+                    
+                            let div4=document.createElement("div");
+                            div4.setAttribute("class","item__delete");
+                            document.querySelectorAll(".income__list .right")[i].appendChild(div4);
+                    
+                            let deletebtn=document.createElement("button");
+                            deletebtn.setAttribute("class","item__delete--btn");
+                            document.querySelectorAll(".income__list .item__delete")[i].appendChild(deletebtn);
+                           
+                    
+                            let btnimg = document.createElement("i");
+                            btnimg.setAttribute("class","ion-ios-close-outline");
+                            document.querySelectorAll(".income__list .item__delete--btn")[i].appendChild(btnimg);
+
+                            document.querySelectorAll(".income__list .ion-ios-close-outline")[i] 
+
+                            i++;
+                        }
+
+                    else{
+
+                        console.log("inside Expense");
+                        document.getElementsByClassName("budget__value")[0].innerHTML=budgetAvaible;
+
+
+                        var desc=document.getElementsByClassName("add__description")[0].value; 
+                    
+                        var val=document.getElementsByClassName('add__value')[0].value; 
+
+                        let Expen=parseFloat(val);
+                        totalExpenses+=Expen;
+
+                        let pecentOfTotalExpense=Math.round(totalExpenses*100/totalIncome);
+
+                        document.getElementsByClassName("budget__expenses--value")[0].innerHTML="- "+totalExpenses;
+                        document.getElementsByClassName("budget__expenses--percentage")[0].innerHTML=pecentOfTotalExpense+"%";
+
+                        budgetAvaible=totalIncome-totalExpenses;
+                        document.getElementsByClassName("budget__value")[0].innerHTML=budgetAvaible;
+
+                        let div0=document.createElement("div");
+                        div0.className="item clearfix"
+                        div0.setAttribute("id","expense-"+j);
+                        document.getElementsByClassName("expenses__list")[0].appendChild(div0); 
+                        
+
+                        let div1=document.createElement("div");
+                        div1.setAttribute("class","item__description");
+                       
+                        div1.innerHTML=desc;
+                                
+                        document.getElementById("expense-"+j).appendChild(div1); 
+
+                        let div2=document.createElement("div");
+                        div2.className="right clearfix"
+                    
+                        document.getElementById("expense-"+j).appendChild(div2); 
+
+
+                        let div3=document.createElement("div");
+                            div3.setAttribute("class","item__value");
+                            console.log(val);
+                            div3.innerHTML="+ "+val;
+                            console.log(val);
+                        
+                        
+                        
+                            document.querySelectorAll(".expenses__list .right")[j].appendChild(div3);  
+                            console.log(val);
+
+                            let percentOfIndividualExpense=Math.round(Expen*100/totalIncome);
+                            let div4=document.createElement("div");
+                            div4.setAttribute("class","item__percentage");
+                            div4.innerHTML= percentOfIndividualExpense+"%";
+                            document.querySelectorAll(".expenses__list .right")[j].appendChild(div4);
+
+
+                            let div5=document.createElement("div");
+                            div5.setAttribute("class","item__delete");
+                            document.querySelectorAll(".expenses__list .right")[j].appendChild(div5);
+
+
+
+
+                            let deletebtn=document.createElement("button");
+                            deletebtn.setAttribute("class","item__delete--btn");
+                            document.querySelectorAll(".expenses__list .item__delete")[j].appendChild(deletebtn);
+                    
+
+                            let btnimg = document.createElement("i");
+                            btnimg.setAttribute("class","ion-ios-close-outline");
+
+                            document.querySelectorAll(".expenses__list .item__delete--btn")[j].appendChild(btnimg);
+                            
+                            j++;
+                        
+                    }
+
+                }
+
+
+                document.getElementsByClassName("income__list")[0].onclick = e => {
+                    
+                        var ss=e.target.parentNode.parentNode.parentNode.parentNode;
+                        let datavalue=ss.querySelectorAll('.item .item__value')[0];
+                        
+                        var IndiviIncomeString=datavalue.innerHTML.slice(2,)
+                        var IndividualIncome=parseInt(IndiviIncomeString);
+                        totalIncome-=IndividualIncome;
+                        document.getElementsByClassName("budget__income--value")[0].innerHTML="+ "+totalIncome;
+
+                        budgetAvaible-=IndividualIncome;
+                        document.getElementsByClassName("budget__value")[0].innerHTML=budgetAvaible;
+
+                        console.log(e.target.parentNode.parentNode.parentNode.parentNode.remove());
+
+                        i--;
+
+                } 
+
+                document.getElementsByClassName("expenses__list")[0].onclick = e => {  
+                    var ss=e.target.parentNode.parentNode.parentNode.parentNode;
+                    let datavalue=ss.querySelectorAll('.item .item__value')[0];
+                    
+                    var IndiviExpenseString=datavalue.innerHTML.slice(2,)
+                    var IndividualExpense=parseInt(IndiviExpenseString);
+                    totalExpenses-=IndividualExpense;
+                    document.getElementsByClassName("budget__expenses--value")[0].innerHTML="- "+totalExpenses;
+
+                    budgetAvaible+=IndividualExpense;
+                    document.getElementsByClassName("budget__value")[0].innerHTML=budgetAvaible;
+
+                    console.log(e.target.parentNode.parentNode.parentNode.parentNode.remove());
+                    j--;
+
+                } 
+
+            });
+
+        </script>
+    </body>
+</html>
